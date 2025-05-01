@@ -58,6 +58,7 @@ class AdvMixTrainer(object):
         self.mu = mu
 
     def train_one_step(self, data):
+        print(data)
         # training D
         self.optimizer.zero_grad()
         loss, p_score = self.model({
