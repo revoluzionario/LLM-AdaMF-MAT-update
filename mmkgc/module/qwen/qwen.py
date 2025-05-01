@@ -35,7 +35,7 @@ class Qwen2_5_VL_4bit(BaseModule):
             quantization_config=bnb_config,
             device_map="auto",
             output_hidden_states=True
-        ).model
+        )
         
         self.decoder = self.model.model
 
