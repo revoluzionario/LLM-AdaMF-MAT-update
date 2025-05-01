@@ -37,7 +37,7 @@ class Qwen2_5_VL_4bit(BaseModule):
             output_hidden_states=True
         )
         
-        self.encoder = self.model.get_encoder()
+        self.encoder = self.model.base_model.encoder
 
         # 2) Freeze all parameters
         for p in self.model.parameters():
