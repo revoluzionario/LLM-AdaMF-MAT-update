@@ -50,16 +50,16 @@ class QwenAdvMixRotatE(Model):
         )
 
         # structural embedding projection layer
-        self.es_proj = nn.Linear(self.dim_e, self.qwen_model.config.hidden_size)
+        self.es_proj = nn.Linear(self.dim_e, self.qwen_model.hidden)
 
         # image embedding projection layer
-        self.img_proj = nn.Linear(self.dim_e, self.qwen_model.config.hidden_size)
+        self.img_proj = nn.Linear(self.dim_e, self.qwen_model.hidden)
 
         # text embedding projection layer
-        self.text_proj = nn.Linear(self.dim_e, self.qwen_model.config.hidden_size)   
+        self.text_proj = nn.Linear(self.dim_e, self.qwen_model.hidden)   
 
         # joint embedding projection layer
-        self.joint_proj = nn.Linear(self.qwen_model.config.hidden_size, self.dim_e)
+        self.joint_proj = nn.Linear(self.qwen_model.hidden, self.dim_e)
 
         
     def get_joint_embeddings(self, es, images, texts):
