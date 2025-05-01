@@ -122,6 +122,11 @@ class QwenPretrainedAdvMixRotatE(Model):
         t_joint = self.get_joint_embeddings(t, t_img_emb, t_text_emb)
         h_fake = self.get_joint_embeddings(h, fake_hv, fake_ht)
         t_fake = self.get_joint_embeddings(t, fake_tv, fake_tt)
+        h_joint = self.joint_proj(h_joint)
+        t_joint = self.joint_proj(t_joint)
+        h_fake = self.joint_proj(h_fake)
+        t_fake = self.joint_proj(t_fake)
+        
         score_h = self.margin - self._calc(h_fake, t_joint, r, mode)
         score_t = self.margin - self._calc(h_joint, t_fake, r, mode)
         score_all = self.margin - self._calc(h_fake, t_fake, r, mode)
