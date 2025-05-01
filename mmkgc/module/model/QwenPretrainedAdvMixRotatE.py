@@ -112,10 +112,10 @@ class QwenPretrainedAdvMixRotatE(Model):
         t_img_emb = self.img_proj_llm(self.img_proj(self.img_embeddings(batch_t)))
         t_text_emb = self.text_proj_llm(self.text_proj(self.text_embeddings(batch_t)))
 
-        fake_hv = self.img_proj(fake_hv)
-        fake_tv = self.img_proj(fake_tv)
-        fake_ht = self.text_proj(fake_ht)
-        fake_tt = self.text_proj(fake_tt)
+        fake_hv = self.img_proj_llm(fake_hv)
+        fake_tv = self.img_proj_llm(fake_tv)
+        fake_ht = self.text_proj_llm(fake_ht)
+        fake_tt = self.text_proj_llm(fake_tt)
 
         # the fake joint embedding
         h_joint = self.get_joint_embeddings(h, h_img_emb, h_text_emb)
