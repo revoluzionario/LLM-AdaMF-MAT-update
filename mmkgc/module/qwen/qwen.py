@@ -17,7 +17,7 @@ class Qwen2_5_VL_4bit(BaseModule):
     """
     def __init__(
         self,
-        base_ckpt="Qwen/Qwen2.5-VL-3B-Instruct",
+        base_ckpt="Qwen/Qwen2.5-VL-7B-Instruct",
         device="cuda"
     ):
         super().__init__()
