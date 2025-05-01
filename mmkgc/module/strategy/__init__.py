@@ -4,8 +4,8 @@ from __future__ import print_function
 
 from .Strategy import Strategy
 from .NegativeSampling import NegativeSampling
-from .TransAENegativeSampling import TransAENegativeSampling
-from .MMKRLNegativeSampling import MMKRLNegativeSampling
+#from .TransAENegativeSampling import TransAENegativeSampling
+#from .MMKRLNegativeSampling import MMKRLNegativeSampling
 
 __all__ = [
     'Strategy',
