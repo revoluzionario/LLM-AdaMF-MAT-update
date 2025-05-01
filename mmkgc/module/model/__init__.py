@@ -27,5 +27,6 @@ __all__ = [
     'AdvMixRotatE',
     'TransAE',
     'MMKRL',
-    'QwenAdvMixRotatE'
+    'QwenAdvMixRotatE',
+    'QwenPretrainedAdvMixRotatE'
 ]

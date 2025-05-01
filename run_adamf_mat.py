@@ -3,7 +3,7 @@ import pickle
 import torch
 import mmkgc
 from mmkgc.config import Tester, AdvMixTrainer
-from mmkgc.module.model import AdvMixRotatE, QwenAdvMixRotatE
+from mmkgc.module.model import AdvMixRotatE, QwenAdvMixRotatE, QwenPretrainedAdvMixRotatE
 from mmkgc.module.loss import SigmoidLoss
 from mmkgc.module.strategy import NegativeSampling
 from mmkgc.data import TrainDataLoader, TestDataLoader
@@ -33,36 +33,35 @@ if __name__ == "__main__":
     # dataloader for test
     test_dataloader = TestDataLoader(
         "./benchmarks/" + args.dataset + '/', "link")
-    
-    # former model
-    #img_emb = torch.load('./embeddings/' + args.dataset + '-visual.pth')
-    #text_emb = torch.load('./embeddings/' + args.dataset + '-textual.pth')
-    ## define the model
-    #kge_score = AdvMixRotatE(
-    #    ent_tot=train_dataloader.get_ent_tot(),
-    #    rel_tot=train_dataloader.get_rel_tot(),
-    #    dim=args.dim,
-    #    margin=args.margin,
-    #    epsilon=2.0,
-    #    img_emb=img_emb,
-    #    text_emb=text_emb
-    #)
-
     qwen = Qwen2_5_VL_4bit()
 
-    img_emb = pickle.load(open('./embeddings/' + args.dataset + '-visual.pkl', 'rb'))
-    text_emb = pickle.load(open('./embeddings/' + args.dataset + '-textual.pkl', 'rb'))
+    img_emb = torch.load('./embeddings/' + args.dataset + '-visual.pth')
+    text_emb = torch.load('./embeddings/' + args.dataset + '-textual.pth')
     # define the model
-    kge_score = QwenAdvMixRotatE(
+    kge_score = QwenPretrainedAdvMixRotatE(
         qwen_model=qwen,
         ent_tot=train_dataloader.get_ent_tot(),
         rel_tot=train_dataloader.get_rel_tot(),
         dim=args.dim,
         margin=args.margin,
         epsilon=2.0,
-        img_list=img_emb,
-        text_list=text_emb
+        img_emb=img_emb,
+        text_emb=text_emb
     )
+    
+    #img_emb = pickle.load(open('./embeddings/' + args.dataset + '-visual.pkl', 'rb'))
+    #text_emb = pickle.load(open('./embeddings/' + args.dataset + '-textual.pkl', 'rb'))
+    ## define the model
+    #kge_score = QwenAdvMixRotatE(
+    #    qwen_model=qwen,
+    #    ent_tot=train_dataloader.get_ent_tot(),
+    #    rel_tot=train_dataloader.get_rel_tot(),
+    #    dim=args.dim,
+    #    margin=args.margin,
+    #    epsilon=2.0,
+    #    img_list=img_emb,
+    #    text_list=text_emb
+    #)
 
     print(kge_score)
     # define the loss function
