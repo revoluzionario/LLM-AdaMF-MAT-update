@@ -14,6 +14,7 @@ from .AdvMixRotatE import AdvMixRotatE
 #from .TransAE import TransAE
 #from .MMKRL import MMKRL
 from .QwenAdvMixRotatE import QwenAdvMixRotatE
+from .QwenPretrainedAdvMixRotatE import QwenPretrainedAdvMixRotatE
 
 __all__ = [
     'Model',
