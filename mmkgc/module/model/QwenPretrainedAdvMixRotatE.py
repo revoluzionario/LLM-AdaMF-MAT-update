@@ -142,3 +142,42 @@ class QwenPretrainedAdvMixRotatE(Model):
                  torch.mean(t ** 2) +
                  torch.mean(r ** 2)) / 3
         return regul
+
+    def _calc(self, h, t, r, mode):
+        pi = self.pi_const
+
+        re_head, im_head = torch.chunk(h, 2, dim=-1)
+        re_tail, im_tail = torch.chunk(t, 2, dim=-1)
+
+        phase_relation = r / (self.rel_embedding_range.item() / pi)
+
+        re_relation = torch.cos(phase_relation)
+        im_relation = torch.sin(phase_relation)
+
+        re_head = re_head.view(-1,
+                               re_relation.shape[0], re_head.shape[-1]).permute(1, 0, 2)
+        re_tail = re_tail.view(-1,
+                               re_relation.shape[0], re_tail.shape[-1]).permute(1, 0, 2)
+        im_head = im_head.view(-1,
+                               re_relation.shape[0], im_head.shape[-1]).permute(1, 0, 2)
+        im_tail = im_tail.view(-1,
+                               re_relation.shape[0], im_tail.shape[-1]).permute(1, 0, 2)
+        im_relation = im_relation.view(
+            -1, re_relation.shape[0], im_relation.shape[-1]).permute(1, 0, 2)
+        re_relation = re_relation.view(
+            -1, re_relation.shape[0], re_relation.shape[-1]).permute(1, 0, 2)
+
+        if mode == "head_batch":
+            re_score = re_relation * re_tail + im_relation * im_tail
+            im_score = re_relation * im_tail - im_relation * re_tail
+            re_score = re_score - re_head
+            im_score = im_score - im_head
+        else:
+            re_score = re_head * re_relation - im_head * im_relation
+            im_score = re_head * im_relation + im_head * re_relation
+            re_score = re_score - re_tail
+            im_score = im_score - im_tail
+
+        score = torch.stack([re_score, im_score], dim=0)
+        score = score.norm(dim=0).sum(dim=-1)
+        return score.permute(1, 0).flatten()
