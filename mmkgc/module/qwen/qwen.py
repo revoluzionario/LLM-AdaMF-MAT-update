@@ -35,9 +35,9 @@ class Qwen2_5_VL_4bit(BaseModule):
             quantization_config=bnb_config,
             device_map="auto",
             output_hidden_states=True
-        )
+        ).model
         
-        self.encoder = self.model.base_model.encoder
+        self.decoder = self.model.model
 
         # 2) Freeze all parameters
         for p in self.model.parameters():
@@ -154,7 +154,7 @@ class Qwen2_5_VL_4bit(BaseModule):
 
         # 4) Run through Qwen’s encoder stack as a fusion layer
         #    The encoder expects (inputs_embeds, attention_mask)
-        out = self.qwen(
+        out = self.decoder(
             inputs_embeds=E, 
             attention_mask=attn_mask
         ).last_hidden_state  # (B, 3, D)
