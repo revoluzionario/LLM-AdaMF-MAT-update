@@ -30,7 +30,7 @@ class Qwen2_5_VL_4bit(BaseModule):
             output_hidden_states=True
         )
         # Expose the decoder (cross-modal fusion layers)
-        self.decoder = self.model.base_model.model
+        self.decoder = self.model.model
 
         # 2) Freeze all parameters
         for p in self.model.parameters():
@@ -42,7 +42,7 @@ class Qwen2_5_VL_4bit(BaseModule):
 
         # 4) Processor for text + vision
         self.processor = AutoProcessor.from_pretrained(base_ckpt)
-        
+
     def encode(
         self,
         es: torch.Tensor,
