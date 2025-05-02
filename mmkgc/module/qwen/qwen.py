@@ -23,32 +23,26 @@ class Qwen2_5_VL_4bit(BaseModule):
         super().__init__()
         self.device = torch.device(device)
 
-        # 1) Quantize to 4-bit
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_compute_dtype=torch.float16,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_use_double_quant=True
-        )
+        # 1) Load the full-precision Qwen2.5-VL model
         self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             base_ckpt,
-            quantization_config=bnb_config,
-            device_map="auto",
+            device_map={"": self.device},   # or "auto" if you have multiple GPUs
             output_hidden_states=True
         )
-        
-        self.decoder = self.model.model
+        # Expose the decoder (cross-modal fusion layers)
+        self.decoder = self.model.base_model.model
 
         # 2) Freeze all parameters
         for p in self.model.parameters():
             p.requires_grad = False
 
+        # 3) Modality tags
         self.hidden = self.model.config.hidden_size
         self.modality_emb = nn.Embedding(3, self.hidden)
 
-        # 3) Processor for tokenization & vision features
+        # 4) Processor for text + vision
         self.processor = AutoProcessor.from_pretrained(base_ckpt)
-
+        
     def encode(
         self,
         es: torch.Tensor,
