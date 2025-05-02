@@ -47,7 +47,7 @@ class Qwen2_5_VL_4bit(BaseModule):
         self.modality_emb = nn.Embedding(3, self.hidden)
 
         # 3) Processor for tokenization & vision features
-        self.processor = AutoProcessor.from_pretrained(base_ckpt)
+        self.processor = AutoProcessor.from_pretrained(base_ckpt, use_fast=True)
 
     def encode(
         self,

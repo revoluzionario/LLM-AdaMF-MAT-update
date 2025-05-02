@@ -81,9 +81,9 @@ class Tester(object):
         else:
             type_constrain = 0
         training_range = self.data_loader
-        print(data_head)
-        print(data_tail)
         for index, [data_head, data_tail] in enumerate(training_range):
+            print(data_head)
+            print(data_tail)
             score = self.test_one_step(data_head)
             self.lib.testHead(score.__array_interface__["data"][0], index, type_constrain)
             score = self.test_one_step(data_tail)
