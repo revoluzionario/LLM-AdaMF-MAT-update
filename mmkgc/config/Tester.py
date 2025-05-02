@@ -75,12 +75,6 @@ class Tester(object):
             
 
     def run_link_prediction(self, type_constrain=False):
-        for mod_name, module in self.model.named_modules():
-        # collect all device names for parameters in this module
-            devs = {p.device for p in module.parameters()}
-            if devs:
-                print(f"{mod_name:40s} → {sorted(str(d) for d in devs)}")
-
         self.lib.initTest()
         self.data_loader.set_sampling_mode('link')
         if type_constrain:
