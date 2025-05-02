@@ -64,6 +64,7 @@ class Tester(object):
             return Variable(torch.from_numpy(x))
 
     def test_one_step(self, data):
+        print(data)
         return self.model.predict({
             'batch_h': self.to_var(data['batch_h'], self.use_gpu),
             'batch_t': self.to_var(data['batch_t'], self.use_gpu),
@@ -82,8 +83,6 @@ class Tester(object):
             type_constrain = 0
         training_range = self.data_loader
         for index, [data_head, data_tail] in enumerate(training_range):
-            print(data_head)
-            print(data_tail)
             score = self.test_one_step(data_head)
             self.lib.testHead(score.__array_interface__["data"][0], index, type_constrain)
             score = self.test_one_step(data_tail)
