@@ -36,11 +36,7 @@ class Qwen2_5_VL_4bit(BaseModule):
             device_map="auto",
             output_hidden_states=True
         )
-<<<<<<< HEAD
         # Expose the decoder (cross-modal fusion layers)
-=======
-        
->>>>>>> parent of e1787f9 (non-quantized)
         self.decoder = self.model.model
 
         # 2) Freeze all parameters
