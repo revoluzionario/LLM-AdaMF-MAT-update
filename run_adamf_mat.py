@@ -64,6 +64,14 @@ if __name__ == "__main__":
     #)
 
     print(kge_score)
+        # to list every sub‐module with its full hierarchical name
+    for name, module in kge_score.named_modules():
+        print(f"{name}: {module.__class__.__name__}")
+
+    # to list every parameter with its full key in state_dict
+    for name, param in kge_score.named_parameters():
+        print(name, param.shape)
+        
     # define the loss function
     model = NegativeSampling(
         model=kge_score,
