@@ -163,7 +163,7 @@ class AdvMixTrainer(object):
 
             if self.save_steps and self.checkpoint_dir and (epoch + 1) % self.save_steps == 0:
                 print("Epoch %d has finished, saving..." % (epoch))
-                self.model.save_checkpoint(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".ckpt"))
+                self.model.save_except_qwen(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".ckpt"))
 
     def set_model(self, model):
         self.model = model

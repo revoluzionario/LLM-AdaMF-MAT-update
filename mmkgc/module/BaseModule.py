@@ -14,13 +14,11 @@ class BaseModule(nn.Module):
 		self.pi_const.requires_grad = False
 
 	def load_checkpoint(self, path):
-		print(torch.load(os.path.join(path)))
 		self.load_state_dict(torch.load(os.path.join(path)))
 		self.eval()
 
 	def save_checkpoint(self, path):
 		torch.save(self.state_dict(), path)
-		print(self.state_dict())
 
 	def load_parameters(self, path):
 		f = open(path, "r")
@@ -55,3 +53,18 @@ class BaseModule(nn.Module):
 			parameters[i] = torch.Tensor(parameters[i])
 		self.load_state_dict(parameters, strict = False)
 		self.eval()
+
+	def save_except_qwen(model: torch.nn.Module, path: str):
+		full_sd = model.state_dict()
+		filtered = {
+			k: v
+			for k, v in full_sd.items()
+			if not k.startswith("qwen")
+		}
+		torch.save(filtered, path)
+
+	def load_except_qwen(model: torch.nn.Module, path: str):
+		ckpt = torch.load(path, map_location="cpu")
+		own_sd = model.state_dict()
+		own_sd.update(ckpt)   # only updates non-qwen keys
+		model.load_state_dict(own_sd, strict=False)

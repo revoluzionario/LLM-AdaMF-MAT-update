@@ -64,14 +64,7 @@ if __name__ == "__main__":
     #)
 
     print(kge_score)
-        # to list every sub‐module with its full hierarchical name
-    for name, module in kge_score.named_modules():
-        print(f"{name}: {module.__class__.__name__}")
 
-    # to list every parameter with its full key in state_dict
-    for name, param in kge_score.named_parameters():
-        print(name, param.shape)
-        
     # define the loss function
     model = NegativeSampling(
         model=kge_score,
@@ -98,9 +91,9 @@ if __name__ == "__main__":
     )
 
     trainer.run()
-    kge_score.save_checkpoint(args.save)
+    kge_score.save_except_qwen(args.save)
 
     # test the model
-    kge_score.load_checkpoint(args.save)
+    kge_score.load_except_qwen(args.save)
     tester = Tester(model=kge_score, data_loader=test_dataloader, use_gpu=True)
     tester.run_link_prediction(type_constrain=False)
