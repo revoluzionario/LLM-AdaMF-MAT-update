@@ -160,7 +160,10 @@ class AdvMixTrainer(object):
                 res += loss
                 res_g += loss_g
             training_range.set_description("Epoch %d | D loss: %f, G loss %f" % (epoch, res, res_g))
-
+            if res > 2.0:
+                res = res/round(res/2)
+            if res_g > 80:
+                res_g = res_g/round(res_g/80)
             if self.save_steps and self.checkpoint_dir and (epoch + 1) % self.save_steps == 0:
                 print("Epoch %d has finished, saving..." % (epoch))
                 self.model.save_except_qwen(os.path.join(self.checkpoint_dir + "-" + str(epoch) + ".ckpt"))
