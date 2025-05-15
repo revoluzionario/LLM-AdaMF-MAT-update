@@ -90,13 +90,13 @@ if __name__ == "__main__":
         mu=args.mu
     )
 
-    #trainer.run()
-    #kge_score.save_except_qwen(args.save)
+    trainer.run()
+    kge_score.save_except_qwen(args.save)
 
     # test the model
     #kge_score.load_except_qwen(args.save)
     #tester = Tester(model=kge_score, data_loader=test_dataloader, use_gpu=False)
     #tester.run_link_prediction(type_constrain=False)
-
+    
     tester = NewTester(model = args.save + '.txt', data_loader=test_dataloader, use_gpu=False)
     tester.run_link_prediction(type_constrain=False)
