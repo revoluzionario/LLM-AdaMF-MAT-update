@@ -151,7 +151,7 @@ class AdvMixTrainer(object):
             raise NotImplementedError
         print("Finish initializing...")
 
-        training_range = tqdm(range(self.train_times))
+        training_range = tqdm(range(self.train_times - 1, self.train_times))
         for epoch in training_range:
             res = 0.0
             res_g = 0.0
