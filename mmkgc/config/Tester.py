@@ -71,7 +71,7 @@ class Tester(object):
             'batch_r': self.to_var(data['batch_r'], self.use_gpu),
             'mode': data['mode']
         })
-            
+        
             
 
     def run_link_prediction(self, type_constrain=False):

@@ -4,6 +4,7 @@ from __future__ import print_function
 
 #from .Trainer import Trainer
 from .Tester import Tester
+from .NewTester import NewTester
 #from .AdvTrainer import AdvTrainer
 #from .AdvConTrainer import AdvConTrainer
 from .AdvMixTrainer import AdvMixTrainer
@@ -20,5 +21,6 @@ __all__ = [
 	'AdvMixTrainer',
 	'AdvConMixTrainer',
 	'MMKRLTrainer',
-	'MultiAdvMixTrainer'
+	'MultiAdvMixTrainer',
+    'NewTester'
 ]

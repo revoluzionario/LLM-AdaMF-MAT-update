@@ -2,7 +2,7 @@ from email.generator import Generator
 import pickle
 import torch
 import mmkgc
-from mmkgc.config import Tester, AdvMixTrainer
+from mmkgc.config import Tester, AdvMixTrainer, NewTester
 from mmkgc.module.model import AdvMixRotatE, QwenAdvMixRotatE, QwenPretrainedAdvMixRotatE
 from mmkgc.module.loss import SigmoidLoss
 from mmkgc.module.strategy import NegativeSampling
@@ -94,6 +94,9 @@ if __name__ == "__main__":
     kge_score.save_except_qwen(args.save)
 
     # test the model
-    kge_score.load_except_qwen(args.save)
-    tester = Tester(model=kge_score, data_loader=test_dataloader, use_gpu=False)
+    #kge_score.load_except_qwen(args.save)
+    #tester = Tester(model=kge_score, data_loader=test_dataloader, use_gpu=False)
+    #tester.run_link_prediction(type_constrain=False)
+    
+    tester = NewTester(model = args.save + '.txt', data_loader=test_dataloader, use_gpu=False)
     tester.run_link_prediction(type_constrain=False)
